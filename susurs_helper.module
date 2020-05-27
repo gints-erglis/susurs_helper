@@ -1,0 +1,71 @@
+<?php
+
+/**
+ * @file
+ * Contains susurs_layout.module.
+ */
+use Drupal\Core\Asset\AttachedAssetsInterface;
+
+/**
+ * Implements hook_page_attachments().
+ */
+function susurs_helper_page_attachments(array &$attachments) {
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    $attachments['#attached']['library'][] = 'susurs/admin';
+  }
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function susurs_helper_page_attachments_alter(array &$attachments) {
+
+  foreach ($attachments['#attached']['library'] as $key => $library) {
+
+    // Install the Devel submodule Kint for debugging.
+    // Check all libs:
+    // ksm($attachments['#attached']['library']);
+
+    // Here I disable the core base library.
+    // Looks pretty ugly afterwards.
+    // if ($library == 'system/base') {
+    //  unset($attachments['#attached']['library'][$key]);
+    // }
+
+    // So for you it must be like following.
+    // Simply try to find the right name via ksm($library);
+    // or the other ksm() command from above.
+    if ($library == 'layout_discovery/twocol') {
+      unset($attachments['#attached']['library'][$key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_css_alter().
+ */
+function susurs_helper_css_alter(&$css, AttachedAssetsInterface $assets) {
+
+  unset($css[drupal_get_path('module', 'entity_reference_layout') . '/css/erl-widget.css']);
+
+}
+
+/**
+ * Implements hook_theme().
+ */
+function susurs_helper_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__layout' => [
+      'base hook' => 'paragraph',
+      'path' => drupal_get_path('theme', 'susurs') . '/templates/paragraphs',
+    ],
+    'paragraph__layout_card' => [
+      'base hook' => 'paragraph',
+      'path' => drupal_get_path('theme', 'susurs') . '/templates/paragraphs',
+    ],
+    'paragraph__rich_text_block' => [
+      'base hook' => 'paragraph',
+      'path' => drupal_get_path('theme', 'susurs') . '/templates/paragraphs',
+    ],
+  ];
+}

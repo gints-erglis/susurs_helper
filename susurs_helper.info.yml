@@ -1,0 +1,9 @@
+name: Susurs helper
+type: module
+description: Susurs theme helper module
+core: 8.x
+package: custom
+dependencies:
+  - layout_options
+  - entity_reference_layout
+
