@@ -12,6 +12,7 @@ use Drupal\Core\Asset\AttachedAssetsInterface;
 function susurs_helper_page_attachments(array &$attachments) {
   if (\Drupal::service('router.admin_context')->isAdminRoute()) {
     $attachments['#attached']['library'][] = 'susurs/admin';
+    $attachments['#attached']['library'][] = 'susurs/sprite';
   }
 }
 
@@ -63,9 +64,13 @@ function susurs_helper_theme($existing, $type, $theme, $path) {
       'base hook' => 'paragraph',
       'path' => drupal_get_path('theme', 'susurs') . '/templates/paragraphs',
     ],
-    'paragraph__rich_text_block' => [
+    'paragraph__layout_accordion' => [
       'base hook' => 'paragraph',
       'path' => drupal_get_path('theme', 'susurs') . '/templates/paragraphs',
     ],
   ];
+}
+
+function susurs_helper_preprocess(&$variables, $hook) {
+  $variables['susurs_path'] = drupal_get_path('theme', 'susurs');
 }
